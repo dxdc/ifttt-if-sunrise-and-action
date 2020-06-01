@@ -2,7 +2,7 @@
 [![mit license](https://badgen.net/badge/license/MIT/red)](https://github.com/dxdc/ifttt-if-sunrise-and-action/blob/master/LICENSE)
 [![Donate](https://badgen.net/badge/Donate/PayPal/91BE09)](https://paypal.me/ddcaspi)
 
-IFTTT applet to use sunset/sunrise times as an additional if/then trigger for when to run an action
+IFTTT applet to use sunset/sunrise times as an additional if/then trigger for when to run an action. You can [enable the original IFTTT applet here](https://ifttt.com/applets/KUEbxRCB-turn-on-wemo-light-switch-if-motion-detected-after-sunset-and-before-sunrise-dallas-tx). Note that this is hardcoded for Dallas, TX.
 
 <img src="/images/main.png?raw=true" width="250" alt="Applet Preview">
 
