@@ -32,6 +32,15 @@ if (triggerDate > todaySunlight.sunrise && triggerDate < todaySunlight.sunset) {
 }
 ```
 
+3. If you want to use specific hours (i.e., not sunset/sunrise), here is an example of how that can be done. The `filter.js` code can be adapted to support any variation/combination you'd like.
+
+```js
+var currentHour = Meta.currentUserTime.hour();
+if (currentHour >= 20 || currentHour < 5 ) {
+ // add action here
+}
+```
+
 ## Notes
 
 - I experienced poor latency (up to 10 minutes in some cases) from IFTTT with this applet and moved on to other services
