@@ -44,9 +44,8 @@ if (currentHour >= 20 || currentHour < 5 ) {
 ## Notes
 
 - I experienced poor latency (up to 10 minutes in some cases) from IFTTT with this applet and moved on to other services
-- There may have been a small bug with the time calculation in some instances, maybe having to do with daylight savings time (?)
-> Please open an issue if you reproduce it
-- `filter.js` code is from 2017, so modernizing it for the latest changes to the `SunCalc` library might be helpful
+- There is a small bug with the time calculation in some instances, having to do with daylight savings time. This may be fixed here: a01d9ed.
+> See: https://github.com/mourner/suncalc/issues/107
 
 ## Installation
 
