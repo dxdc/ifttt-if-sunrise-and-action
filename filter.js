@@ -8,6 +8,12 @@ var triggerDate = Meta.currentUserTime.toDate();
 
 // TypeScript port of https://github.com/mourner/suncalc
 
+/*
+ (c) 2011-2015, Vladimir Agafonkin
+ SunCalc is a JavaScript library for calculating sun/moon position and light phases.
+ https://github.com/mourner/suncalc
+*/
+
 var PI   = Math.PI,
     sin  = Math.sin,
     cos  = Math.cos,
@@ -28,7 +34,6 @@ var dayMs = 1000 * 60 * 60 * 24,
 function toJulian(date: Date) { return date.valueOf() / dayMs - 0.5 + J1970; }
 function fromJulian(j: number)  { return new Date((j + 0.5 - J1970) * dayMs); }
 function toDays(date: Date)   { return toJulian(date) - J2000; }
-
 
 // general calculations for position
 
@@ -74,7 +79,6 @@ function sunCoords(d: number): {} {
     };
 }
 
-
 var SunCalc = <any>{};
 // calculates sun position for a given date and latitude/longitude
 
@@ -93,7 +97,6 @@ SunCalc.getPosition = function (date: Date, lat: number, lng: number): {} {
     };
 };
 
-
 // sun times configuration (angle, morning name, evening name)
 
 var times = SunCalc.times = [
@@ -111,7 +114,6 @@ SunCalc.addTime = function (angle: number, riseName: number, setName: number): v
     times.push([angle, riseName, setName]);
 };
 
-
 // calculations for sun times
 
 var J0 = 0.0009;
@@ -122,6 +124,7 @@ function approxTransit(Ht: number, lw: number, n: number): number { return J0 + 
 function solarTransitJ(ds: number, M: number, L: number): number  { return J2000 + ds + 0.0053 * sin(M) - 0.0069 * sin(2 * L); }
 
 function hourAngle(h: number, phi: number, d: number): number { return acos((sin(h) - sin(phi) * sin(d)) / (cos(phi) * cos(d))); }
+function observerAngle(height: number) { return -2.076 * Math.sqrt(height) / 60; }
 
 // returns set time for the given sun altitude
 function getSetJ(h: number, lw: number, phi: number, dec: number, n: number, M: number, L: number): number {
@@ -131,13 +134,15 @@ function getSetJ(h: number, lw: number, phi: number, dec: number, n: number, M: 
     return solarTransitJ(a, M, L);
 }
 
+// calculates sun times for a given date, latitude/longitude, and, optionally,
+// the observer height (in meters) relative to the horizon
 
-// calculates sun times for a given date and latitude/longitude
-
-SunCalc.getTimes = function (date: Date, lat: number, lng: number): any {
+SunCalc.getTimes = function (date: Date, lat: number, lng: number, height: number): any {
+    height = height || 0;
 
     var lw = rad * -lng,
         phi = rad * lat,
+        dh = observerAngle(height),
 
         d = toDays(date),
         n = julianCycle(d, lw),
@@ -149,8 +154,7 @@ SunCalc.getTimes = function (date: Date, lat: number, lng: number): any {
 
         Jnoon = solarTransitJ(ds, M, L),
 
-        i, len, time, Jset, Jrise;
-
+        i, len, time, h0, Jset, Jrise;
 
     var result = <any>{
         solarNoon: fromJulian(Jnoon),
@@ -159,8 +163,9 @@ SunCalc.getTimes = function (date: Date, lat: number, lng: number): any {
 
     for (i = 0, len = times.length; i < len; i += 1) {
         time = times[i];
+        h0 = (<number>time[0] + dh) * rad;
 
-        Jset = getSetJ(<number>time[0] * rad, lw, phi, dec, n, M, L);
+        Jset = getSetJ(h0, lw, phi, dec, n, M, L);
         Jrise = Jnoon - (Jset - Jnoon);
 
         result[time[1]] = fromJulian(Jrise);
@@ -169,7 +174,6 @@ SunCalc.getTimes = function (date: Date, lat: number, lng: number): any {
 
     return result;
 };
-
 
 // moon calculations, based on http://aa.quae.nl/en/reken/hemelpositie.html formulas
 
@@ -211,7 +215,6 @@ SunCalc.getMoonPosition = function (date: Date, lat: number, lng: number): {} {
         parallacticAngle: pa
     };
 };
-
 
 // calculations for illumination parameters of the moon,
 // based on http://idlastro.gsfc.nasa.gov/ftp/pro/astro/mphase.pro formulas and
