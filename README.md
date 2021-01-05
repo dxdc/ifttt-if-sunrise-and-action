@@ -44,7 +44,7 @@ if (currentHour >= 20 || currentHour < 5 ) {
 ## Notes
 
 - I experienced poor latency (up to 10 minutes in some cases) from IFTTT with this applet and moved on to other services
-- There is a small bug with the time calculation in some instances, having to do with daylight savings time. This may be fixed here: a01d9ed.
+- There is a small bug with the time calculation in some instances, having to do with daylight savings time. This may be fixed here: https://github.com/dxdc/ifttt-if-sunrise-and-action/commit/a01d9eda5ebaf05edf325d89f8845c6340d5fc6c.
 > See: https://github.com/mourner/suncalc/issues/107
 
 ## Installation
