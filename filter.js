@@ -6,6 +6,10 @@ var myLongitude = -96.8;
 // var triggerDate = Meta.triggerTime.toDate();
 var triggerDate = Meta.currentUserTime.toDate();
 
+// Effort to fix https://github.com/mourner/suncalc/issues/107
+var triggerDateOffset = triggerDate.getTimezoneOffset();
+var suncalcDate = new Date(triggerDate.setHours(0,triggerDateOffset,0,0));
+
 // TypeScript port of https://github.com/mourner/suncalc
 
 /*
@@ -300,7 +304,7 @@ SunCalc.getMoonTimes = function (date: string, lat: number, lng: number, inUTC: 
     return result;
 }
 
-var todaySunlight = <any>SunCalc.getTimes(triggerDate, myLatitude, myLongitude);
+var todaySunlight = <any>SunCalc.getTimes(suncalcDate, myLatitude, myLongitude);
 
 // Customize with getTimes properties, sunrise, dusk, etc.
 if (triggerDate > todaySunlight.sunrise && triggerDate < todaySunlight.sunset) {
